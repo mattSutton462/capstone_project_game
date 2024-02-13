@@ -6,5 +6,8 @@ By Milestone 1/Week 7 - Simple Generation of Environment and combat.
 By Milestone 2/Week 11 - Procedural Generation of Environment in order to allow for "levels."
 By MileStone 3/Week 14 - Fleshout story/Incorpate polishing
 
-### Notes for Professor
-Git is not allowing me to push empty folders and the src and test folders have not been used yet. Still working out the kinks of using unity with Github at the moment.
+### Features Implemented
+- Animated and moving character sprite
+
+### Features in Progress (soon to be done)
+- Main Menu (animated the background working on functionality at the moment)
