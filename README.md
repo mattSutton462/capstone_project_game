@@ -8,6 +8,8 @@ By MileStone 3/Week 14 - Fleshout story/Incorpate polishing
 
 ### Features Implemented
 - Animated and moving character sprite
+- Main Menu/Script with a play button that moves from main menu to game screen
+- Also added a quit button which when fully compiled will allow the user to quit out of the application.
 
-### Features in Progress (soon to be done)
-- Main Menu (animated the background working on functionality at the moment)
+### Features coming soon
+- Combat (player/enemy?)
