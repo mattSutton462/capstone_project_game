@@ -12,4 +12,5 @@ By MileStone 3/Week 14 - Fleshout story/Incorpate polishing
 - Also added a quit button which when fully compiled will allow the user to quit out of the application.
 
 ### Features coming soon
-- Combat (player/enemy?)
+- Combat (player/enemy?) 
+- Attacking features are in progress and nearing completetion!

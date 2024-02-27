@@ -1,29 +1,75 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class playerScript : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    private AgentMover agentMover = new AgentMover(); 
 
-    public Rigidbody2D rb;
     public Animator animator;
 
-    Vector2 movement;
+    private WeaponParent weaponParent;
+
+    Vector2 pointerInput, movementInput;
+
+    [SerializeField]
+    private InputActionReference movement, attack, pointerPosition;
+
+    private void OnEnable()
+    {
+        attack.action.performed += PerformAttack;
+    }
+
+    private void OnDisable()
+    {
+        attack.action.performed -= PerformAttack;
+    }
+
+    private void PerformAttack (InputAction.CallbackContext obj)
+    {
+        if(weaponParent == null)
+        {
+            Debug.LogError("Weapon parent is null", gameObject);
+            return;
+        }
+     // weaponParent.PerformAnAttack();
+    }
+
+    private void Start()
+    {
+        weaponParent = GetComponentInChildren<WeaponParent>();
+        agentMover = GetComponent<AgentMover>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        pointerInput = GetPointerInput();
+        weaponParent.PointerPosition = pointerInput;
 
-        animator.SetFloat("Horizontal", movement.x);
-        animator.SetFloat("Vertical", movement.y);
-        animator.SetFloat("Speed", movement.magnitude);
+        movementInput = movement.action.ReadValue<Vector2>().normalized;
+
+        agentMover.MovementInput = movementInput;
+
+        AnimateCharacter();
     }
 
-    void FixedUpdate()
+    // gets mouse movement
+    private Vector2 GetPointerInput()
     {
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        Vector3 mousePos = pointerPosition.action.ReadValue<Vector2>();
+        mousePos.z = Camera.main.nearClipPlane;
+        return Camera.main.ScreenToWorldPoint(mousePos);
     }
+
+    private void AnimateCharacter()
+    {
+        animator.SetFloat("Horizontal", movementInput.x);
+        animator.SetFloat("Vertical", movementInput.y);
+        animator.SetFloat("Speed", movementInput.magnitude);
+    }
+
+
+
 }
