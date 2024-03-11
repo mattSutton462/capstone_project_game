@@ -10,7 +10,11 @@ By MileStone 3/Week 14 - Fleshout story/Incorpate polishing
 - Animated and moving character sprite
 - Main Menu/Script with a play button that moves from main menu to game screen
 - Also added a quit button which when fully compiled will allow the user to quit out of the application.
+- Added Health and combat features
+- Created a simple enemy AI player and enemy are able to defeat eachother
 
-### Features coming soon
-- Combat (player/enemy?) 
-- Attacking features are in progress and nearing completetion!
+### Features to work on
+- More combat features (dodge roll, different attacks/abilities)?
+- Precedural Generation of map
+- Enemy AI Improvement/contextual movement
+- Add narrative elements 
