@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Agent : MonoBehaviour
 {
-    private AgentMover agentMover = new AgentMover(); 
+    private AgentMover agentMover; 
 
     public Animator animator;
 
@@ -22,6 +22,11 @@ public class Agent : MonoBehaviour
         weaponParent.Attack();
     }
 
+    public void PerformDash()
+    {
+        agentMover.Dash();
+    }
+
     private void Start()
     {
         weaponParent = GetComponentInChildren<WeaponParent>();
@@ -31,8 +36,6 @@ public class Agent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //pointerInput = GetPointerInput();
-        //movementInput = movement.action.ReadValue<Vector2>().normalized;
 
         weaponParent.PointerPosition = PointerInput;
         agentMover.MovementInput = MovementInput;
@@ -48,6 +51,8 @@ public class Agent : MonoBehaviour
         animator.SetFloat("Vertical", MovementInput.y);
         animator.SetFloat("Speed", MovementInput.magnitude);
     }
+
+
 
 
 
