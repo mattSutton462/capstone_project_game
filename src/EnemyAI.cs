@@ -26,6 +26,7 @@ public class EnemyAI : MonoBehaviour
         float distance = Vector2.Distance(player.position, transform.position);
         if(distance < chaseDistanceThreshold)
         {
+            chaseDistanceThreshold = 10;
             OnPointerInput?.Invoke(player.position);
             if(distance <= attackDistanceThreshold)
             {

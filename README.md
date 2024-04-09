@@ -13,16 +13,16 @@ By MileStone 3/Week 14 - Fleshout story/Incorpate polishing
 - Added Health and combat features
 - Created a simple enemy AI player and enemy are able to defeat eachother
 - Added a dash and attack knockback. 
-- Basic Implementation of Procedurally Generated Environment(to be used in dungeons)
+- Implementation of Procedurally Generated Environment
 
 ### Features to work on
 - More combat features (different attacks/abilities)?
-- Precedural Generation of maps
+- Precedural Generation enemies and decorations? to fill up dungeon
 - Improve the UI
 - Enemy AI Improvement/contextual movement
 - Add narrative elements 
 
 ### In Progress
-- Procedural Generation of Maps(Finishing touches?)
+- Procedural Generation of Enemies and Objects
 - Improvement of Enemy AI (addressed follow distance bug, will refactor AI as needed)
 - Found alternative attack graphical resources (to be used for player and enemy attacks)(variety)
