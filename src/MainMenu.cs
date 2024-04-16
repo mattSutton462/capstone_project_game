@@ -5,13 +5,24 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void PlayGame ()
+    public void PlayGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+
+        // Check if nextSceneIndex is within the bounds of the available scenes
+        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextSceneIndex);
+        }
+        else
+        {
+            Debug.LogWarning("No next scene available. Current scene might be the last one.");
+        }
     }
 
-    public void QuitGame ()
+    public void QuitGame()
     {
+        Debug.Log("Quitting game...");
         Application.Quit();
     }
 }

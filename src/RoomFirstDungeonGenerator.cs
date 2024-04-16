@@ -14,12 +14,35 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
     [SerializeField]
     private bool randomWalkRooms = false;
 
+    private Vector2Int spawnPoint;
+
+    public GameObject player;
+    public GameObject enemyPrefab;
+    public GameObject jarPrefab;
+    public GameObject barrelPrefab;
+    public GameObject exitPrefab;
+
+    public int numberOfEnemies = 5;
+    public int numberOfJars = 10;
+    public int numberOfBarrels = 10;
+    public float minDistance = 5f;
+    private List<GameObject> spawnedEnemies = new List<GameObject>();
+    private List<GameObject> spawnedJars = new List<GameObject>();
+    private List<GameObject> spawnedBarrels = new List<GameObject>();
+
+
+    public void GenDungeon()
+    {
+        RunProceduralGeneration(); 
+    }
+
     protected override void RunProceduralGeneration()
     {
+        tilemapVisualizer.Clear();
         CreateRooms();
     }
 
-    private void CreateRooms()
+    public void CreateRooms()
     {
         var roomsList = ProceduralGenerationAlgorithms.BinarySpacePartitioning(new BoundsInt((Vector3Int)startPosition,
             new Vector3Int(dungeonWidth, dungeonHeight, 0)), minRoomWidth, minRoomHeight);
@@ -34,7 +57,14 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
         {
             floor = CreateSimpleRooms(roomsList);
         }
-        
+
+
+        SetSpawnPoint(floor);
+        SpawnEnemies(floor);
+        SpawnJars(floor);
+        SpawnBarrels(floor);
+        SpawnExit(floor, minDistance);
+
 
         List<Vector2Int> roomCenters = new List<Vector2Int>();
         foreach (var room in roomsList)
@@ -48,6 +78,114 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
         tilemapVisualizer.PaintFloorTiles(floor);
         WallGenerator.CreateWalls(floor, tilemapVisualizer);
     }
+
+
+    private void SetSpawnPoint(HashSet<Vector2Int> floor)
+    {
+        List<Vector2Int> floorList = new List<Vector2Int>(floor);
+        spawnPoint = floorList[Random.Range(0, floorList.Count)];
+
+        player.transform.position = new Vector3(spawnPoint.x, spawnPoint.y, 0);
+    }
+
+    private void SpawnEnemies(HashSet<Vector2Int> floorPositions)
+    {
+        // Destroy previous enemies
+        foreach (var enemy in spawnedEnemies)
+        {
+            if (enemy != null)
+            {
+                //DestroyImmediate(enemy);
+                Destroy(enemy);
+            }
+        }
+        spawnedEnemies.Clear();
+
+        List<Vector2Int> floorList = new List<Vector2Int>(floorPositions);
+
+        for (int i = 0; i < numberOfEnemies; i++)
+        {
+            Vector2Int randomPosition = floorList[Random.Range(0, floorList.Count)];
+
+            // Check if the random position is not too close to the player's spawn point
+            if (Vector2.Distance(randomPosition, spawnPoint) > 5) // Adjust the distance as needed
+            {
+                GameObject newEnemy = Instantiate(enemyPrefab, new Vector3(randomPosition.x, randomPosition.y, 0), Quaternion.identity);
+                spawnedEnemies.Add(newEnemy);
+            }
+        }
+    }
+
+    private void SpawnExit(HashSet<Vector2Int> floorPositions, float minDistance)
+    {
+        List<Vector2Int> floorList = new List<Vector2Int>(floorPositions);
+        Vector2 exitSpawnPoint;
+
+        do
+        {
+            exitSpawnPoint = floorList[Random.Range(0, floorList.Count)];
+        } while (Vector2.Distance(new Vector2(exitSpawnPoint.x, exitSpawnPoint.y), new Vector2(spawnPoint.x, spawnPoint.y)) < minDistance);
+
+        exitPrefab.transform.position = new Vector3(exitSpawnPoint.x, exitSpawnPoint.y, 0);
+
+    }
+
+    private void SpawnJars(HashSet<Vector2Int> floorPositions)
+    {
+        // Destroy previous enemies
+        foreach (var jar in spawnedJars)
+        {
+            if (jar != null)
+            {
+                //DestroyImmediate(jar);
+                Destroy(jar);
+            }
+        }
+        spawnedJars.Clear();
+
+        List<Vector2Int> floorList = new List<Vector2Int>(floorPositions);
+
+        for (int i = 0; i < numberOfJars; i++)
+        {
+            Vector2Int randomPosition = floorList[Random.Range(0, floorList.Count)];
+
+            // Check if the random position is not too close to the player's spawn point
+            if (Vector2.Distance(randomPosition, spawnPoint) > 5) // Adjust the distance as needed
+            {
+                GameObject newJar = Instantiate(jarPrefab, new Vector3(randomPosition.x, randomPosition.y, 0), Quaternion.identity);
+                spawnedEnemies.Add(newJar);
+            }
+        }
+    }
+
+    private void SpawnBarrels(HashSet<Vector2Int> floorPositions)
+    {
+        // Destroy previous enemies
+        foreach (var barrel in spawnedBarrels)
+        {
+            if (barrel != null)
+            {
+                //DestroyImmediate(barrel);
+                Destroy(barrel);
+            }
+        }
+        spawnedBarrels.Clear();
+
+        List<Vector2Int> floorList = new List<Vector2Int>(floorPositions);
+
+        for (int i = 0; i < numberOfBarrels; i++)
+        {
+            Vector2Int randomPosition = floorList[Random.Range(0, floorList.Count)];
+
+            // Check if the random position is not too close to the player's spawn point
+            if (Vector2.Distance(randomPosition, spawnPoint) > 5) // Adjust the distance as needed
+            {
+                GameObject newBarrel = Instantiate(barrelPrefab, new Vector3(randomPosition.x, randomPosition.y, 0), Quaternion.identity);
+                spawnedEnemies.Add(newBarrel);
+            }
+        }
+    }
+
 
     private HashSet<Vector2Int> CreateRoomsRandomly(List<BoundsInt> roomsList)
     {
