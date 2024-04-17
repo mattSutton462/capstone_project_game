@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 
 public class HealthScript : MonoBehaviour
 {
@@ -16,11 +17,20 @@ public class HealthScript : MonoBehaviour
 
     public GameObject coinPrefab;
 
+    public HealthUI healthUI;
+    public bool isPlayer = false;
+
     public void IntitializeHealth( int healthValue)
     {
         currentHealth = healthValue;
         maxHealth = healthValue;
         isDead = false;
+
+        if (healthUI != null)
+        {
+            healthUI.InitializeHearts(maxHealth); // Initialize the heart images
+            healthUI.UpdateHearts(currentHealth); // Update the heart images based on current health
+        }
     }
 
     public void GetHit (int amount, GameObject sender)
@@ -32,6 +42,14 @@ public class HealthScript : MonoBehaviour
 
         currentHealth -= amount;
 
+        if (healthUI != null)
+        {
+            if (isPlayer)
+            {
+                healthUI.UpdateHearts(currentHealth); // Update the heart images based on current health
+            }
+        }
+
         if (currentHealth > 0)
         {
             OnHitWithReference?.Invoke(sender);
@@ -41,7 +59,15 @@ public class HealthScript : MonoBehaviour
             OnDeathWithReference?.Invoke(sender);
             isDead = true;
             Destroy(gameObject);
-            DropCoins();
+
+            if(isPlayer == false)
+            {
+                DropCoins();
+            }
+            else
+            {
+                SceneManager.LoadScene(0);
+            }
         }
     }
 
