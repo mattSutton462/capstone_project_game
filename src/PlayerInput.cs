@@ -7,10 +7,10 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour
 {
     public UnityEvent<Vector2> OnMovementInput, OnPointerInput;
-    public UnityEvent OnAttack, OnDash;
+    public UnityEvent OnAttack, OnDash, OnPause;
 
     [SerializeField]
-    private InputActionReference movement, attack, pointerPosition, dash;
+    private InputActionReference movement, attack, pointerPosition, dash, pause;
 
 
     private void Update()
@@ -31,13 +31,15 @@ public class PlayerInput : MonoBehaviour
     {
         dash.action.performed += PerformDash;
         attack.action.performed += PerformAttack;
-        
+        pause.action.performed += PauseGame;
+
     }
 
     private void OnDisable()
     {
         attack.action.performed -= PerformAttack;
         dash.action.performed -= PerformDash;
+        pause.action.performed -= PauseGame;
     }
 
     private void PerformAttack(InputAction.CallbackContext obj)
@@ -50,5 +52,10 @@ public class PlayerInput : MonoBehaviour
         OnDash?.Invoke();
     }
 
+    private void PauseGame(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Pause");
+        OnPause?.Invoke();
+    }
     
 }

@@ -56,15 +56,7 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
         else
         {
             floor = CreateSimpleRooms(roomsList);
-        }
-
-
-        SetSpawnPoint(floor);
-        SpawnEnemies(floor);
-        SpawnJars(floor);
-        SpawnBarrels(floor);
-        SpawnExit(floor, minDistance);
-
+        } 
 
         List<Vector2Int> roomCenters = new List<Vector2Int>();
         foreach (var room in roomsList)
@@ -77,6 +69,12 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 
         tilemapVisualizer.PaintFloorTiles(floor);
         WallGenerator.CreateWalls(floor, tilemapVisualizer);
+
+        SetSpawnPoint(floor);
+        SpawnEnemies(floor);
+        SpawnJars(floor);
+        SpawnBarrels(floor);
+        SpawnExit(floor, minDistance);
     }
 
 

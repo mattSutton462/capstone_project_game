@@ -15,10 +15,11 @@ public class HealthScript : MonoBehaviour
     [SerializeField]
     public bool isDead = false;
 
-    public GameObject coinPrefab;
+    public GameObject coinPrefab, healPrefab;
 
     public HealthUI healthUI;
     public bool isPlayer = false;
+    public bool isEnemy = false;
 
     public void IntitializeHealth( int healthValue)
     {
@@ -63,10 +64,28 @@ public class HealthScript : MonoBehaviour
             if(isPlayer == false)
             {
                 DropCoins();
+                if (isEnemy)
+                {
+                    DropHeals();
+                }
             }
             else
             {
                 SceneManager.LoadScene(0);
+            }
+        }
+    }
+
+    public void Heal(int amount)
+    {
+        if (!isDead)
+        {
+            currentHealth += amount;
+            currentHealth = Mathf.Min(currentHealth, maxHealth); // Ensure health doesn't exceed max health
+
+            if (healthUI != null && isPlayer) // Check if it's the player to update UI
+            {
+                healthUI.UpdateHearts(currentHealth); // Update the heart images based on current health
             }
         }
     }
@@ -80,6 +99,17 @@ public class HealthScript : MonoBehaviour
             // Instantiate the coin prefab at the jar's position with a slight random offset
             Vector2 spawnPosition = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
             Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
+        }
+    }
+
+    void DropHeals()
+    {
+        int chanceToDrop = Random.Range(0, 101);
+
+        if(chanceToDrop > 75) 
+        {
+            Vector2 spawnPosition = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
+            Instantiate(healPrefab, spawnPosition, Quaternion.identity);
         }
     }
 }
